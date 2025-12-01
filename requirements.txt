@@ -1,0 +1,10 @@
+beautifulsoup4
+fastapi
+httpx
+mem0ai
+numpy
+openai
+python-dotenv
+qdrant-client
+requests
+uvicorn
