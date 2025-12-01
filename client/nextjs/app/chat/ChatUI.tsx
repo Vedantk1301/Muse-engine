@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { sendMessage, type MuseResponse, type Product, type UiEvent } from "../api";
+import { sendMessage, type ClarificationCardsPayload, type MuseResponse, type Product, type UiEvent } from "../api";
 import ProductCard from "../components/ProductCard";
 import ClarificationCards from "../components/ClarificationCards";
 import DisambiguationCard from "../components/DisambiguationCard";
@@ -16,8 +16,8 @@ export default function ChatUI() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [clarificationCards, setClarificationCards] = useState<any>(null);
-  const [uiEvent, setUiEvent] = useState<any>(null);
+  const [clarificationCards, setClarificationCards] = useState<ClarificationCardsPayload | null>(null);
+  const [uiEvent, setUiEvent] = useState<UiEvent | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const handleSend = async (text: string = input, uiEvents: UiEvent[] = []) => {
@@ -69,8 +69,8 @@ export default function ChatUI() {
   }, [messages, loading]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-blue-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-[1400px] h-[95vh] flex flex-col gap-4">
+    <div className="min-h-screen w-full overflow-x-hidden bg-gradient-to-br from-pink-50 via-white to-blue-50 flex items-center justify-center px-4 py-6 sm:px-8">
+      <div className="w-full max-w-6xl mx-auto min-h-[78vh] max-h-[92vh] flex flex-col gap-4 sm:gap-6">
 
         {/* Header */}
         <div className="text-center fade-in-up py-2">
@@ -83,10 +83,10 @@ export default function ChatUI() {
         </div>
 
         {/* Chat Container */}
-        <div className="flex-1 bg-white/80 backdrop-blur-2xl rounded-[2rem] shadow-2xl border border-white/50 overflow-hidden flex flex-col relative">
+        <div className="flex-1 min-h-0 bg-white/80 backdrop-blur-2xl rounded-[2rem] shadow-2xl border border-white/50 overflow-hidden flex flex-col relative">
 
           {/* Messages Area */}
-          <div className="flex-1 overflow-y-auto p-6 sm:p-10 space-y-8 scroll-smooth">
+          <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden p-6 sm:p-10 space-y-8 scroll-smooth">
 
             {/* Empty State */}
             {messages.length === 0 && (
@@ -97,7 +97,7 @@ export default function ChatUI() {
                     Welcome to Muse
                   </h2>
                   <p className="text-gray-500 font-light leading-relaxed text-xl">
-                    Your AI fashion companion. Tell me what you're looking for, or just say hello!
+                    Your AI fashion companion. Tell me what you&apos;re looking for, or just say hello!
                   </p>
                 </div>
               </div>
@@ -107,15 +107,15 @@ export default function ChatUI() {
             {messages.map((msg, idx) => (
               <div
                 key={idx}
-                className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"} fade-in-up`}
+                className={`flex w-full ${msg.role === "user" ? "justify-end" : "justify-start"} fade-in-up`}
               >
                 <div
-                  className={`max-w-[70%] rounded-3xl px-8 py-6 shadow-sm ${msg.role === "user"
+                  className={`w-full max-w-[92%] sm:max-w-[75%] md:max-w-[70%] rounded-3xl px-7 sm:px-8 py-5 sm:py-6 shadow-sm ${msg.role === "user"
                     ? "bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-br-sm"
                     : "bg-white text-gray-800 border border-gray-100 rounded-bl-sm shadow-md"
                     }`}
                 >
-                  <p className="whitespace-pre-line font-light text-lg leading-relaxed">{msg.text}</p>
+                  <p className="whitespace-pre-line break-words font-light text-lg leading-relaxed">{msg.text}</p>
 
                   {/* Products Grid */}
                   {msg.products && msg.products.length > 0 && (
@@ -171,7 +171,7 @@ export default function ChatUI() {
 
           {/* Input Area */}
           <div className="px-4 sm:px-8 pb-6 pt-4 bg-gradient-to-t from-white via-white/95 to-transparent border-t border-white/60">
-            <div className="relative mx-auto w-full max-w-[1400px]">
+            <div className="relative mx-auto w-full max-w-[1400px] overflow-hidden rounded-2xl sm:rounded-[18px]">
               <div className="absolute inset-x-0 sm:inset-x-6 -top-1 h-16 bg-gradient-to-r from-pink-200/60 via-rose-200/70 to-blue-200/50 blur-3xl opacity-80 pointer-events-none" />
 
               <div className="relative w-full flex flex-col sm:flex-row items-stretch gap-3 sm:gap-4 rounded-[18px] sm:rounded-3xl border border-pink-100/70 bg-white/95 shadow-[0_20px_60px_rgba(236,72,153,0.12)] focus-within:border-pink-300 focus-within:shadow-[0_22px_70px_rgba(236,72,153,0.18)] transition-all px-4 py-3 sm:px-5 sm:py-4">
